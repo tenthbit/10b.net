@@ -62,6 +62,7 @@ namespace _10bClient
         {
             if (e.KeyCode == Keys.Enter)
             {
+                e.SuppressKeyPress = true;
                 btnSend_Click(sender, e);
             }
         }
