@@ -15,7 +15,6 @@ namespace _10blib
         public SslStream ssl;
         byte[] buffer;
         public List<Message> Messages = new List<Message>();
-        public int Bytes;
         public string Host { get; set; }
         public int Port { get; set; }
         public Connection(string host, int port)
@@ -44,7 +43,6 @@ namespace _10blib
         {
             int bytesRead = ssl.EndRead(ar);
             AsyncCallback cb = (AsyncCallback)ar.AsyncState;
-            Bytes = bytesRead;
             if (bytesRead > 0)
             {
                 Messages.Add(new Message(System.Text.Encoding.UTF8.GetString(buffer)));             
