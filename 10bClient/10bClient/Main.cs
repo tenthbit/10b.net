@@ -54,6 +54,8 @@ namespace _10bClient
         private void btnSend_Click(object sender, EventArgs e)
         {
             conn.WriteString(txtMsg.Text, WriteCall);
+            txtMsg.Text = "";
+            txtMsg.Focus();
         }
     }
 }
