@@ -22,13 +22,13 @@ namespace _10blib
         public int Port { get; set; }
         public Connection(string host, int port, string user, string pass)
         {
-            tcp = new TcpClient(host, 10817);
+            tcp = new TcpClient(host, port);
             ssl = new SslStream(tcp.GetStream(), false);
             Username = user;
             Pass = pass;
             try
             {
-                ssl.AuthenticateAsClient("10bit.danopia.net");
+                ssl.AuthenticateAsClient(host);
             }
             catch (System.Security.Authentication.AuthenticationException e)
             {
