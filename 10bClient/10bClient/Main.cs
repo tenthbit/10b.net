@@ -63,8 +63,6 @@ namespace _10bClient
             if (e.KeyCode == Keys.Enter)
             {
                 btnSend_Click(sender, e);
-                txtMsg.Text = "";
-                txtMsg.Focus(); 
             }
         }
     }
