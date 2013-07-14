@@ -57,5 +57,15 @@ namespace _10bClient
             txtMsg.Text = "";
             txtMsg.Focus();
         }
+
+        private void txtMsg_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSend_Click(sender, e);
+                txtMsg.Text = "";
+                txtMsg.Focus(); 
+            }
+        }
     }
 }

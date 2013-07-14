@@ -14,6 +14,7 @@ namespace _10bClient
         public Connect()
         {
             InitializeComponent();
+            this.AcceptButton = btnConnect;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
