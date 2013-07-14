@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Net.Security;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace _10blib
 {
@@ -21,7 +22,7 @@ namespace _10blib
         public int Port { get; set; }
         public Connection(string host, int port, string user, string pass)
         {
-            tcp = new TcpClient("10bit.danopia.net", 10817);
+            tcp = new TcpClient(host, 10817);
             ssl = new SslStream(tcp.GetStream(), false);
             Username = user;
             Pass = pass;
@@ -59,6 +60,12 @@ namespace _10blib
                 cb.Invoke(ar);
             }
             else ReadString(cb);
+        }
+
+        public void SendMessage(string msg, string topic, AsyncCallback call)
+        {
+            var ex = new { data = msg, context = 0 };
+            WriteString(new Payload(0, "act-msg", Username, "programming", ex).ToString(), call);
         }
 
         public void WriteString(string msg, AsyncCallback call)

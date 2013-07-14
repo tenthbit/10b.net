@@ -32,7 +32,7 @@ namespace _10bClient
         {
             foreach (_10blib.Payload msg in conn.Messages)
             {
-                if (msg.Operation == "welcome") conn.Auth(WriteCall);
+                if (msg.op == "welcome") conn.Auth(WriteCall);
                 this.BeginInvoke((Action)(() =>
                 {
                     txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
@@ -54,7 +54,7 @@ namespace _10bClient
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            conn.WriteString(txtMsg.Text, WriteCall);
+            conn.SendMessage(txtMsg.Text, "programming", WriteCall);
             txtMsg.Text = "";
             txtMsg.Focus();
         }

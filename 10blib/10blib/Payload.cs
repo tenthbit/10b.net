@@ -8,17 +8,27 @@ namespace _10blib
 {
     public class Payload
     {
-        public long Timestamp { get; set; }
-        public string Operation { get; set; }
-        public string Source { get; set; }
-        public dynamic Extra { get; set; }
+        public long ts { get; set; }
+        public string op { get; set; }
+        public string sr { get; set; }
+        public dynamic ex { get; set; }
+        public dynamic tp { get; set; }
         public Payload(string msg)
         {
             dynamic obj = JsonConvert.DeserializeObject<dynamic>(msg);
-            if(obj.ts != null) Timestamp = (long)obj.ts;
-            if(obj.op != null) Operation = (string)obj.op;
-            if(obj.sr != null) Source = (string)obj.sr;
-            if(obj.ex != null) Extra = obj.ex;
+            if(obj.ts != null) ts = (long)obj.ts;
+            if(obj.op != null) op = (string)obj.op;
+            if(obj.sr != null) sr = (string)obj.sr;
+            if(obj.ex != null) ex = obj.ex;
+        }
+
+        public Payload(long Ts, string Op, string Sr, string Tp, dynamic Ex)
+        {
+            ts = Ts;
+            op = Op;
+            sr = Sr;
+            ex = Ex;
+            tp = Tp;
         }
 
         public override string ToString()
