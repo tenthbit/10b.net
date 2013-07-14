@@ -40,8 +40,8 @@ namespace _10blib
 
         public void Auth(AsyncCallback call)
         {
-            string sendmsg = "{\"op\": \"auth\", \"ex\": {\"method\": \"password\", \"username\": \"" + Username + "\", \"password\": \"" + Pass + "\"}}";
-            WriteString(sendmsg, call);
+            var ex = new { method = "password", username = Username, password = Pass };
+            WriteString(new Payload("auth", Username, "", ex).ToString(),call);          
         }
 
         public void ReadString(AsyncCallback call)
@@ -65,7 +65,7 @@ namespace _10blib
         public void SendMessage(string msg, string topic, AsyncCallback call)
         {
             var ex = new { data = msg, context = "" };
-            WriteString(new Payload(0, "act-msg", Username, "programming", ex).ToString(), call);
+            WriteString(new Payload("act-msg", Username, "programming", ex).ToString(), call);
         }
 
         public void WriteString(string msg, AsyncCallback call)

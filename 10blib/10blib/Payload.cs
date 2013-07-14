@@ -22,9 +22,9 @@ namespace _10blib
             if(obj.ex != null) ex = obj.ex;
         }
 
-        public Payload(long Ts, string Op, string Sr, string Tp, dynamic Ex)
+        public Payload(string Op, string Sr, string Tp, dynamic Ex)
         {
-            ts = Ts;
+            ts = (long)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalSeconds;
             op = Op;
             sr = Sr;
             ex = Ex;
