@@ -16,11 +16,15 @@ namespace _10blib
         byte[] buffer;
         public List<Message> Messages = new List<Message>();
         public string Host { get; set; }
+        public string Username { get; set; }
+        public string Pass { get; set; }
         public int Port { get; set; }
-        public Connection(string host, int port)
+        public Connection(string host, int port, string user, string pass)
         {
             tcp = new TcpClient("10bit.danopia.net", 10817);
             ssl = new SslStream(tcp.GetStream(), false);
+            Username = user;
+            Pass = pass;
             try
             {
                 ssl.AuthenticateAsClient("10bit.danopia.net");
@@ -31,6 +35,12 @@ namespace _10blib
                 throw e;
             }
             buffer = new byte[65536];
+        }
+
+        public void Auth(AsyncCallback call)
+        {
+            string sendmsg = "{\"op\": \"auth\", \"ex\": {\"method\": \"password\", \"username\": \"" + Username + "\", \"password\": \"" + Pass + "\"}}";
+            WriteString(sendmsg, call);
         }
 
         public void ReadString(AsyncCallback call)

@@ -1,6 +1,6 @@
 ﻿namespace _10bClient
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
