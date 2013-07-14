@@ -30,12 +30,12 @@ namespace _10bClient
 
         void ReadCall(IAsyncResult ar)
         {
-            foreach (_10blib.Message msg in conn.Messages)
+            foreach (_10blib.Payload msg in conn.Messages)
             {
-                if (msg.Contents.Contains("welcome")) conn.Auth(WriteCall);
+                if (msg.Operation == "welcome") conn.Auth(WriteCall);
                 this.BeginInvoke((Action)(() =>
                 {
-                    txtStatus.AppendText(">>> " + msg.Contents + "\r\n");
+                    txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
                 }));
             }
             conn.Messages.Clear();

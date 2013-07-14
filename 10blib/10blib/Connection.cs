@@ -14,7 +14,7 @@ namespace _10blib
         TcpClient tcp;
         public SslStream ssl;
         byte[] buffer;
-        public List<Message> Messages = new List<Message>();
+        public List<Payload> Messages = new List<Payload>();
         public string Host { get; set; }
         public string Username { get; set; }
         public string Pass { get; set; }
@@ -55,7 +55,7 @@ namespace _10blib
             AsyncCallback cb = (AsyncCallback)ar.AsyncState;
             if (bytesRead > 0)
             {
-                Messages.Add(new Message(System.Text.Encoding.UTF8.GetString(buffer)));             
+                Messages.Add(new Payload(System.Text.Encoding.UTF8.GetString(buffer)));             
                 cb.Invoke(ar);
             }
             else ReadString(cb);
