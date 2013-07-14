@@ -15,9 +15,10 @@ namespace _10bClient
     public partial class Main : Form
     {
         _10blib.Connection conn;
-        public Main(string host, int port, string user, string pass)
+        public Main(string host, int port, string user, string pass, Connect connForm)
         {
             InitializeComponent();
+            connForm.Invoke((Action)(() => { connForm.Close(); }));
             conn = new _10blib.Connection(host, port, user, pass);
             conn.ReadString(new AsyncCallback(ReadCall));
         }

@@ -20,9 +20,8 @@ namespace _10bClient
         private void btnConnect_Click(object sender, EventArgs e)
         {
             System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ThreadStart((Action)(()=>
-            { Application.Run(new Main(txtHost.Text, Convert.ToInt32(txtPort.Text), txtUser.Text, txtPass.Text)); })));
+            { Application.Run(new Main(txtHost.Text, Convert.ToInt32(txtPort.Text), txtUser.Text, txtPass.Text,this)); })));
             t.Start();
-            this.Hide();
         }
     }
 }
