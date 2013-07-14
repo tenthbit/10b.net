@@ -53,6 +53,12 @@ namespace _10bClient
             {
                 txtStatus.AppendText("<<< " + msg + "\r\n");
             }));
+            conn.ssl.EndWrite(ar);
+        }
+
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            conn.WriteString(txtMsg.Text, WriteCall);
         }
     }
 }
