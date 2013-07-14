@@ -64,7 +64,7 @@ namespace _10blib
 
         public void SendMessage(string msg, string topic, AsyncCallback call)
         {
-            var ex = new { data = msg, context = 0 };
+            var ex = new { data = msg, context = "" };
             WriteString(new Payload(0, "act-msg", Username, "programming", ex).ToString(), call);
         }
 
