@@ -12,7 +12,7 @@ namespace _10blib
         public string op { get; set; }
         public string sr { get; set; }
         public dynamic ex { get; set; }
-        public dynamic tp { get; set; }
+        public dynamic rm { get; set; }
         public Payload(string msg)
         {
             dynamic obj = JsonConvert.DeserializeObject<dynamic>(msg);
@@ -24,11 +24,17 @@ namespace _10blib
 
         public Payload(string Op, string Sr, string Tp, dynamic Ex)
         {
-            ts = (long)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalSeconds;
             op = Op;
             sr = Sr;
             ex = Ex;
-            tp = Tp;
+            rm = Tp;
+        }
+
+        // Exists because ToString() doesn't exclude ts
+        public string SerializeForSend()
+        {
+            var sendobj = new { op = op, sr = sr, ex = ex, rm = rm };
+            return JsonConvert.SerializeObject(sendobj);
         }
 
         public override string ToString()

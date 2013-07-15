@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Net.Security;
 using System.Threading;
-using Newtonsoft.Json;
 
 namespace _10blib
 {
@@ -15,7 +14,7 @@ namespace _10blib
         TcpClient tcp;
         public SslStream ssl;
         byte[] buffer;
-        public List<Payload> Messages = new List<Payload>();
+        public List<Payload> Payloads = new List<Payload>();
         public string Host { get; set; }
         public string Username { get; set; }
         public string Pass { get; set; }
@@ -41,7 +40,7 @@ namespace _10blib
         public void Auth(AsyncCallback call)
         {
             var ex = new { method = "password", username = Username, password = Pass };
-            WriteString(new Payload("auth", Username, "", ex).ToString(),call);          
+            WriteString(new Payload("auth", Username, "", ex).SerializeForSend(),call);          
         }
 
         public void ReadString(AsyncCallback call)
@@ -56,7 +55,7 @@ namespace _10blib
             AsyncCallback cb = (AsyncCallback)ar.AsyncState;
             if (bytesRead > 0)
             {
-                Messages.Add(new Payload(System.Text.Encoding.UTF8.GetString(buffer)));             
+                Payloads.Add(new Payload(System.Text.Encoding.UTF8.GetString(buffer)));             
                 cb.Invoke(ar);
             }
             else ReadString(cb);
@@ -64,12 +63,13 @@ namespace _10blib
 
         public void SendMessage(string msg, string topic, AsyncCallback call)
         {
-            var ex = new { data = msg, context = "" };
-            WriteString(new Payload("act-msg", Username, "programming", ex).ToString(), call);
+            var ex = new { data = msg, type="message" };
+            WriteString(new Payload("act", Username, "programming", ex).SerializeForSend(), call);
         }
 
         public void WriteString(string msg, AsyncCallback call)
         {
+            msg += "\n";
             ssl.BeginWrite(System.Text.Encoding.UTF8.GetBytes(msg), 0, System.Text.Encoding.UTF8.GetByteCount(msg), call, msg);
         }
     }
