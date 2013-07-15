@@ -36,7 +36,7 @@ namespace _10blib
         // Exists because ToString() doesn't exclude ts
         public string SerializeForSend()
         {
-                return JsonConvert.SerializeObject(new { op = op, sr = sr, ex = ex }, settings);
+                return JsonConvert.SerializeObject(new { op = op, sr = sr, ex = ex, rm = rm }, settings);
         }
 
         public override string ToString()
