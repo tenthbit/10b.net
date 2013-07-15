@@ -40,6 +40,7 @@
             this.txtStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtStatus.Enabled = false;
             this.txtStatus.Location = new System.Drawing.Point(12, 12);
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.Size = new System.Drawing.Size(518, 398);
@@ -76,7 +77,7 @@
             this.txtMsg.Name = "txtMsg";
             this.txtMsg.Size = new System.Drawing.Size(468, 20);
             this.txtMsg.TabIndex = 1;
-            this.txtMsg.KeyDown += txtMsg_KeyDown;
+            this.txtMsg.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMsg_KeyDown);
             // 
             // Main
             // 

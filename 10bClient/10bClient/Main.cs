@@ -10,11 +10,12 @@ using System.Net.Sockets;
 using System.Net.Security;
 using System.Threading;
 using Newtonsoft.Json;
+using _10blib;
 namespace _10bClient
 {
     public partial class Main : Form
     {
-        _10blib.Connection conn;
+        Connection conn;
         string room = "48557f95";
         public Main(string host, int port, string user, string pass, Connect connForm)
         {
@@ -36,7 +37,14 @@ namespace _10bClient
                 if (msg.op == "welcome") conn.Auth(WriteCall);
                 this.BeginInvoke((Action)(() =>
                 {
-                    txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
+                    if (msg.ex.isack == null)
+                    {
+                        if (msg.op == "msg" && msg.ex.type == "msg")
+                            txtStatus.AppendText("<" + msg.sr + "> " + msg.ex.data + "\r\n");
+                        else
+                            txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
+    
+                    }
                 }));
             }
             conn.Payloads.Clear();
@@ -45,10 +53,14 @@ namespace _10bClient
 
         void WriteCall(IAsyncResult ar)
         {
-            string msg = (string)ar.AsyncState;
+            Payload msg = new Payload((string)ar.AsyncState);
             this.BeginInvoke((Action)(() =>
             {
-                txtStatus.AppendText("<<< " + msg + "\r\n");
+                if (msg.op == "act" && msg.ex.type == "msg")
+                    txtStatus.AppendText("<" + conn.Username + "> " + msg.ex.data + "\r\n");
+#if DEBUG
+                txtStatus.AppendText("<<< " + msg.ToString() + "\r\n");
+#endif
             }));
             conn.ssl.EndWrite(ar);
         }

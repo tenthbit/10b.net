@@ -13,6 +13,7 @@ namespace _10blib
         public string sr { get; set; }
         public dynamic ex { get; set; }
         public dynamic rm { get; set; }
+        private JsonSerializerSettings settings;
         public Payload(string msg)
         {
             dynamic obj = JsonConvert.DeserializeObject<dynamic>(msg);
@@ -20,6 +21,8 @@ namespace _10blib
             if(obj.op != null) op = (string)obj.op;
             if(obj.sr != null) sr = (string)obj.sr;
             if(obj.ex != null) ex = obj.ex;
+            settings = new JsonSerializerSettings();
+            settings.NullValueHandling = NullValueHandling.Ignore;
         }
 
         public Payload(string Op, string Sr, string Rm, dynamic Ex)
@@ -33,13 +36,12 @@ namespace _10blib
         // Exists because ToString() doesn't exclude ts
         public string SerializeForSend()
         {
-            var sendobj = new { op = op, sr = sr, ex = ex, rm = rm };
-            return JsonConvert.SerializeObject(sendobj);
+                return JsonConvert.SerializeObject(new { op = op, sr = sr, ex = ex }, settings);
         }
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this, settings);
         }
     }
 }

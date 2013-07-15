@@ -40,7 +40,7 @@ namespace _10blib
         public void Auth(AsyncCallback call)
         {
             var ex = new { method = "password", username = Username, password = Pass };
-            WriteString(new Payload("auth", Username, "", ex).SerializeForSend(),call);          
+            WriteString(new Payload("auth", null, null, ex).SerializeForSend(),call);          
         }
 
         public void ReadString(AsyncCallback call)
@@ -64,7 +64,7 @@ namespace _10blib
         public void SendMessage(string msg, string room, AsyncCallback call)
         {
             var ex = new { data = msg, type="msg" };
-            WriteString(new Payload("act", Username, room, ex).SerializeForSend(), call);
+            WriteString(new Payload("act", null, room, ex).SerializeForSend(), call);
         }
 
         public void WriteString(string msg, AsyncCallback call)
