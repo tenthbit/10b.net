@@ -22,12 +22,7 @@ namespace _10bClient
             InitializeComponent();
             connForm.Invoke((Action)(() => { connForm.Close(); }));
             conn = new _10blib.Connection(host, port, user, pass);
-            conn.ReadString(new AsyncCallback(ReadCall));
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
+            conn.ReadString(ReadCall);
         }
 
         void ReadCall(IAsyncResult ar)
@@ -48,7 +43,7 @@ namespace _10bClient
                 }));
             }
             conn.Payloads.Clear();
-            conn.ReadString(new AsyncCallback(ReadCall));
+            conn.ReadString(ReadCall);
         }
 
         void WriteCall(IAsyncResult ar)
@@ -62,7 +57,8 @@ namespace _10bClient
                 txtStatus.AppendText("<<< " + msg.ToString() + "\r\n");
 #endif
             }));
-            conn.ssl.EndWrite(ar);
+            if(conn.ssl.CanWrite)
+                conn.ssl.EndWrite(ar);
         }
 
         private void btnSend_Click(object sender, EventArgs e)

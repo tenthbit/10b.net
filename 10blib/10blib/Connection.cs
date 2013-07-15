@@ -48,18 +48,21 @@ namespace _10blib
             var ex = new { user = Username };
             WriteString(new Payload("leave", null, null, ex).SerializeForSend(),null);
             ssl.Close();
-            tcp.Close
+            tcp.Close();
         }
 
         public void ReadString(AsyncCallback call)
         {
             buffer = new byte[65536];
-            ssl.BeginRead(buffer, 0, 65536, ReadCallBack, call);
+            if(ssl.CanRead)
+                ssl.BeginRead(buffer, 0, 65536, ReadCallBack, call);
         }
 
         public void ReadCallBack(IAsyncResult ar)
         {
-            int bytesRead = ssl.EndRead(ar);
+            int bytesRead = 0;
+            if(ssl.CanRead)
+                bytesRead = ssl.EndRead(ar);
             AsyncCallback cb = (AsyncCallback)ar.AsyncState;
             if (bytesRead > 0)
             {
@@ -78,7 +81,8 @@ namespace _10blib
         public void WriteString(string msg, AsyncCallback call)
         {
             msg += "\n";
-            ssl.BeginWrite(System.Text.Encoding.UTF8.GetBytes(msg), 0, System.Text.Encoding.UTF8.GetByteCount(msg), call, msg);
+            if(ssl.CanWrite)
+                ssl.BeginWrite(System.Text.Encoding.UTF8.GetBytes(msg), 0, System.Text.Encoding.UTF8.GetByteCount(msg), call, msg);
         }
     }
 }
