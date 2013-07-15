@@ -43,6 +43,14 @@ namespace _10blib
             WriteString(new Payload("auth", null, null, ex).SerializeForSend(),call);          
         }
 
+        public void Leave(AsyncCallback call)
+        {
+            var ex = new { user = Username };
+            WriteString(new Payload("leave", null, null, ex).SerializeForSend(), call);
+            ssl.Close();
+            tcp.Close();
+        }
+
         public void ReadString(AsyncCallback call)
         {
             buffer = new byte[65536];

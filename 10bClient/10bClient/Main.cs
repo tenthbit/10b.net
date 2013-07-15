@@ -80,5 +80,10 @@ namespace _10bClient
                 btnSend_Click(sender, e);
             }
         }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            conn.Leave(WriteCall);
+        }
     }
 }
