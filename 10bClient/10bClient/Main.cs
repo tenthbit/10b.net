@@ -83,7 +83,7 @@ namespace _10bClient
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            conn.Leave(WriteCall);
+            conn.Leave();
         }
     }
 }

@@ -43,12 +43,12 @@ namespace _10blib
             WriteString(new Payload("auth", null, null, ex).SerializeForSend(),call);          
         }
 
-        public void Leave(AsyncCallback call)
+        public void Leave()
         {
             var ex = new { user = Username };
-            WriteString(new Payload("leave", null, null, ex).SerializeForSend(), call);
+            WriteString(new Payload("leave", null, null, ex).SerializeForSend(),null);
             ssl.Close();
-            tcp.Close();
+            tcp.Close
         }
 
         public void ReadString(AsyncCallback call)
