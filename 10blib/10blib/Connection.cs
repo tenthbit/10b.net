@@ -61,10 +61,10 @@ namespace _10blib
             else ReadString(cb);
         }
 
-        public void SendMessage(string msg, string topic, AsyncCallback call)
+        public void SendMessage(string msg, string room, AsyncCallback call)
         {
-            var ex = new { data = msg, type="message" };
-            WriteString(new Payload("act", Username, "programming", ex).SerializeForSend(), call);
+            var ex = new { data = msg, type="msg" };
+            WriteString(new Payload("act", Username, room, ex).SerializeForSend(), call);
         }
 
         public void WriteString(string msg, AsyncCallback call)

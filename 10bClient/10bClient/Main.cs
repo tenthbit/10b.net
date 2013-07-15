@@ -15,6 +15,7 @@ namespace _10bClient
     public partial class Main : Form
     {
         _10blib.Connection conn;
+        string room = "48557f95";
         public Main(string host, int port, string user, string pass, Connect connForm)
         {
             InitializeComponent();
@@ -54,7 +55,7 @@ namespace _10bClient
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            conn.SendMessage(txtMsg.Text, "programming", WriteCall);
+            conn.SendMessage(txtMsg.Text, room, WriteCall);
             txtMsg.Text = "";
             txtMsg.Focus();
         }

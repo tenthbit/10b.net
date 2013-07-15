@@ -22,12 +22,12 @@ namespace _10blib
             if(obj.ex != null) ex = obj.ex;
         }
 
-        public Payload(string Op, string Sr, string Tp, dynamic Ex)
+        public Payload(string Op, string Sr, string Rm, dynamic Ex)
         {
             op = Op;
             sr = Sr;
             ex = Ex;
-            rm = Tp;
+            rm = Rm;
         }
 
         // Exists because ToString() doesn't exclude ts
