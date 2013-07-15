@@ -39,7 +39,7 @@ namespace _10bClient
                 {
                     if (msg.ex.isack == null)
                     {
-                        if (msg.op == "msg" && msg.ex.type == "msg")
+                        if (msg.op == "act" && msg.ex.type == "msg")
                             txtStatus.AppendText("<" + msg.sr + "> " + msg.ex.data + "\r\n");
                         else
                             txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
