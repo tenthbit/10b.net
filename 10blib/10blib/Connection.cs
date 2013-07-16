@@ -45,8 +45,7 @@ namespace _10blib
 
         public void Leave()
         {
-            var ex = new { user = Username };
-            WriteString(new Payload("leave", null, null, ex).SerializeForSend(),null);
+            WriteString(new Payload("leave", null, null, null).SerializeForSend(),null);
             ssl.Close();
             tcp.Close();
         }
@@ -74,7 +73,7 @@ namespace _10blib
 
         public void SendMessage(string msg, string room, AsyncCallback call)
         {
-            var ex = new { data = msg, type="msg" };
+            var ex = new { message=msg };
             WriteString(new Payload("act", null, room, ex).SerializeForSend(), call);
         }
 

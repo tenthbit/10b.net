@@ -34,8 +34,12 @@ namespace _10bClient
                 {
                     if (msg.ex.isack == null)
                     {
-                        if (msg.op == "act" && msg.ex.type == "msg")
-                            txtStatus.AppendText("<" + msg.sr + "> " + msg.ex.data + "\r\n");
+                        if (msg.op == "act" && msg.ex.message != null)
+                            txtStatus.AppendText("<" + msg.sr + "> " + msg.ex.message + "\r\n");
+                        else if (msg.op == "join")
+                            txtStatus.AppendText("* " + msg.sr + " has joined " + msg.rm + "\r\n");
+                        else if (msg.op == "leave" && msg.rm == null)
+                            txtStatus.AppendText("* " + msg.sr + " has quit.\r\n");
                         else
                             txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
     
@@ -51,8 +55,8 @@ namespace _10bClient
             Payload msg = new Payload((string)ar.AsyncState);
             this.BeginInvoke((Action)(() =>
             {
-                if (msg.op == "act" && msg.ex.type == "msg")
-                    txtStatus.AppendText("<" + conn.Username + "> " + msg.ex.data + "\r\n");
+                if (msg.op == "act" && msg.ex.message != null)
+                    txtStatus.AppendText("<" + conn.Username + "> " + msg.ex.message + "\r\n");
 #if DEBUG
                 txtStatus.AppendText("<<< " + msg.ToString() + "\r\n");
 #endif

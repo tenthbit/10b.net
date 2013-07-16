@@ -17,10 +17,11 @@ namespace _10blib
         public Payload(string msg)
         {
             dynamic obj = JsonConvert.DeserializeObject<dynamic>(msg);
-            if(obj.ts != null) ts = (long)obj.ts;
-            if(obj.op != null) op = (string)obj.op;
-            if(obj.sr != null) sr = (string)obj.sr;
-            if(obj.ex != null) ex = obj.ex;
+            if (obj.ts != null) ts = (long)obj.ts;
+            if (obj.op != null) op = (string)obj.op;
+            if (obj.sr != null) sr = (string)obj.sr;
+            if (obj.ex != null) ex = obj.ex;
+            if (obj.rm != null) rm = obj.rm;
             settings = new JsonSerializerSettings();
             settings.NullValueHandling = NullValueHandling.Ignore;
         }
