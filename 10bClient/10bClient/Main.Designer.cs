@@ -39,6 +39,9 @@
             // 
             // tabRooms
             // 
+            this.tabRooms.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabRooms.Controls.Add(this.tbpStatus);
             this.tabRooms.Location = new System.Drawing.Point(12, 12);
             this.tabRooms.Name = "tabRooms";
@@ -48,6 +51,9 @@
             // 
             // txtMsg
             // 
+            this.txtMsg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMsg.BackColor = System.Drawing.SystemColors.ControlDark;
             this.txtMsg.Location = new System.Drawing.Point(12, 407);
             this.txtMsg.Name = "txtMsg";
             this.txtMsg.Size = new System.Drawing.Size(437, 20);
@@ -56,6 +62,7 @@
             // 
             // btnSend
             // 
+            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSend.Location = new System.Drawing.Point(455, 405);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(75, 23);

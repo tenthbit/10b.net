@@ -18,6 +18,7 @@ namespace _10bClient
         Connection conn;
         string room = "48557f95";
         Dictionary<string, TabPage> rooms = new Dictionary<string, TabPage>();
+        Dictionary<string, dynamic> roomMeta = new Dictionary<string,dynamic>();
         public Main(string host, int port, string user, string pass, Connect connForm)
         {
             InitializeComponent();
@@ -46,7 +47,6 @@ namespace _10bClient
                         txtStatus.AppendText("[" + dt.ToLongTimeString() + "] ");
                         if (msg.op == "act" && msg.ex.message != null)
                         {
-                            txtStatus.AppendText(" : " + msg.rm + " ");
                             if (msg.ex.isaction != null && msg.ex.isaction == true) txtStatus.AppendText("* " + msg.sr + " " + msg.ex.message + "\r\n");
                             else txtStatus.AppendText("<" + msg.sr + "> " + msg.ex.message + "\r\n");
                         }
@@ -55,7 +55,12 @@ namespace _10bClient
                         else if (msg.op == "leave")
                         {
                             if (msg.rm == null) txtStatus.AppendText("* " + msg.sr + " has quit.\r\n");
-                            else txtStatus.AppendText("* " + msg.sr + " has left " + msg.rm + ".\r\n");
+                            else txtStatus.AppendText("* " + msg.sr + " has left " + roomMeta[msg.rm].name + ".\r\n");
+                        }
+                        else if (msg.op == "meta")
+                        {
+                            if (msg.rm != null && !roomMeta.ContainsKey(msg.rm))
+                                roomMeta[msg.rm] = msg.ex;
                         }
                         else
                             txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
@@ -71,11 +76,12 @@ namespace _10bClient
                             {
                                 tabRooms.TabPages.Add(msg.rm);
                                 rooms[msg.rm] = tabRooms.TabPages[tabRooms.TabPages.Count-1];
+                                rooms[msg.rm].Text = roomMeta[msg.rm].name;
                                 rooms[msg.rm].Controls.Add(new RichTextBox());
                                 rooms[msg.rm].Controls[0].Dock = DockStyle.Fill;
                                 RichTextBox txtStatus = (RichTextBox)rooms[msg.rm].Controls[0];
                                 txtStatus.AppendText("[" + dt.ToLongTimeString() + "] ");
-                                txtStatus.AppendText(" You have joined " + msg.rm);
+                                txtStatus.AppendText(" You have joined " + roomMeta[msg.rm].name + "\r\n");
                             }
                         }
                     }
@@ -111,18 +117,24 @@ namespace _10bClient
 
         private void btnSend_Click(object sender, EventArgs e)
         {
+            var roomsReversed = rooms.ToDictionary(x => x.Value, x => x.Key);
+            if (txtMsg.Text == "") return;
+            if (tabRooms.SelectedTab == tabRooms.TabPages[0]) return;
             if (txtMsg.Text[0] == '/')
             {
                 if (txtMsg.Text.Split(' ')[0].Substring(1) == "me")
-                    conn.SendMessage(txtMsg.Text.Substring(4), room, true, WriteCall);
+                    conn.SendMessage(txtMsg.Text.Substring(4), roomsReversed[tabRooms.SelectedTab], true, WriteCall);
                 else if (txtMsg.Text.Split(' ')[0].Substring(1) == "join")
                     conn.Join(txtMsg.Text.Substring(6), WriteCall);
+                else if (txtMsg.Text.Split(' ')[0].Substring(1) == "part")
+                {
+                    conn.Leave(roomsReversed[tabRooms.SelectedTab], WriteCall);
+                    rooms.Remove(roomsReversed[tabRooms.SelectedTab]);
+                    tabRooms.TabPages.Remove(tabRooms.SelectedTab);
+                }
             }
             else
-            {
-                var roomsReversed = rooms.ToDictionary(x => x.Value, x => x.Key);
                 conn.SendMessage(txtMsg.Text, roomsReversed[tabRooms.SelectedTab], false, WriteCall);
-            }
             txtMsg.Text = "";
             txtMsg.Focus();
         }
@@ -138,7 +150,7 @@ namespace _10bClient
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            conn.Leave();
+            conn.Leave(null,null);
         }
     }
 }
