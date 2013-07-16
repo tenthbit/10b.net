@@ -51,7 +51,7 @@ namespace _10bClient
                             else txtStatus.AppendText("<" + msg.sr + "> " + msg.ex.message + "\r\n");
                         }
                         else if (msg.op == "join")
-                            txtStatus.AppendText("* " + msg.sr + " has joined " + msg.rm + "\r\n");
+                            txtStatus.AppendText("* " + msg.sr + " has joined " + roomMeta[msg.rm].name + "\r\n");
                         else if (msg.op == "leave")
                         {
                             if (msg.rm == null) txtStatus.AppendText("* " + msg.sr + " has quit.\r\n");
@@ -64,6 +64,8 @@ namespace _10bClient
                         }
                         else
                             txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
+                        txtStatus.SelectionStart = txtStatus.Text.Length;
+                        txtStatus.ScrollToCaret();
 
                     }
                     else
@@ -76,7 +78,7 @@ namespace _10bClient
                             {
                                 tabRooms.TabPages.Add(msg.rm);
                                 rooms[msg.rm] = tabRooms.TabPages[tabRooms.TabPages.Count-1];
-                                rooms[msg.rm].Text = roomMeta[msg.rm].name;
+                                rooms[msg.rm].Text = roomMeta[msg.rm].name + " (" + msg.rm + ")";
                                 rooms[msg.rm].Controls.Add(new RichTextBox());
                                 rooms[msg.rm].Controls[0].Dock = DockStyle.Fill;
                                 RichTextBox txtStatus = (RichTextBox)rooms[msg.rm].Controls[0];
@@ -85,6 +87,7 @@ namespace _10bClient
                             }
                         }
                     }
+
                 }));
             }
             conn.Payloads.Clear();
@@ -110,6 +113,8 @@ namespace _10bClient
 #if DEBUG
                 txtStatus.AppendText("<<< " + msg.ToString() + "\r\n");
 #endif
+                txtStatus.SelectionStart = txtStatus.Text.Length;
+                txtStatus.ScrollToCaret();
             }));
             if(conn.ssl.CanWrite)
                 conn.ssl.EndWrite(ar);
