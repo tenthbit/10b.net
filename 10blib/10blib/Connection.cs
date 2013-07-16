@@ -50,6 +50,11 @@ namespace _10blib
             tcp.Close();
         }
 
+        public void Join(string roomid, AsyncCallback call)
+        {
+            WriteString(new Payload("join", null, roomid, null).SerializeForSend(), call);
+        }
+
         public void ReadString(AsyncCallback call)
         {
             buffer = new byte[65536];
@@ -71,10 +76,18 @@ namespace _10blib
             else ReadString(cb);
         }
 
-        public void SendMessage(string msg, string room, AsyncCallback call)
+        public void SendMessage(string msg, string room, bool isaction, AsyncCallback call)
         {
-            var ex = new { message=msg };
-            WriteString(new Payload("act", null, room, ex).SerializeForSend(), call);
+            if (isaction)
+            {
+                var ex = new { message = msg, isaction = isaction };
+                WriteString(new Payload("act", null, room, ex).SerializeForSend(), call);
+            }
+            else
+            {
+                var ex = new { message = msg };
+                WriteString(new Payload("act", null, room, ex).SerializeForSend(), call);
+            }
         }
 
         public void WriteString(string msg, AsyncCallback call)

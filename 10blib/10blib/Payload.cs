@@ -12,7 +12,7 @@ namespace _10blib
         public string op { get; set; }
         public string sr { get; set; }
         public dynamic ex { get; set; }
-        public dynamic rm { get; set; }
+        public string rm { get; set; }
         private JsonSerializerSettings settings;
         public Payload(string msg)
         {

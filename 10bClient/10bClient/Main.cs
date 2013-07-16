@@ -17,6 +17,7 @@ namespace _10bClient
     {
         Connection conn;
         string room = "48557f95";
+        Dictionary<string, TabPage> rooms = new Dictionary<string, TabPage>();
         public Main(string host, int port, string user, string pass, Connect connForm)
         {
             InitializeComponent();
@@ -34,15 +35,49 @@ namespace _10bClient
                 {
                     if (msg.ex.isack == null)
                     {
+                        RichTextBox txtStatus;
+                        if(msg.rm != null && msg.rm != "" && rooms.ContainsKey(msg.rm))
+                            txtStatus = (RichTextBox)rooms[msg.rm].Controls[0];
+                        else
+                            txtStatus = (RichTextBox)tbpStatus.Controls[0];
+
+                        DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                        dt = dt.AddMilliseconds(msg.ts).ToLocalTime();
+                        txtStatus.AppendText("[" + dt.ToLongTimeString() + "] ");
                         if (msg.op == "act" && msg.ex.message != null)
-                            txtStatus.AppendText("<" + msg.sr + "> " + msg.ex.message + "\r\n");
+                        {
+                            txtStatus.AppendText(" : " + msg.rm + " ");
+                            if (msg.ex.isaction != null && msg.ex.isaction == true) txtStatus.AppendText("* " + msg.sr + " " + msg.ex.message + "\r\n");
+                            else txtStatus.AppendText("<" + msg.sr + "> " + msg.ex.message + "\r\n");
+                        }
                         else if (msg.op == "join")
                             txtStatus.AppendText("* " + msg.sr + " has joined " + msg.rm + "\r\n");
-                        else if (msg.op == "leave" && msg.rm == null)
-                            txtStatus.AppendText("* " + msg.sr + " has quit.\r\n");
+                        else if (msg.op == "leave")
+                        {
+                            if (msg.rm == null) txtStatus.AppendText("* " + msg.sr + " has quit.\r\n");
+                            else txtStatus.AppendText("* " + msg.sr + " has left " + msg.rm + ".\r\n");
+                        }
                         else
                             txtStatus.AppendText(">>> " + msg.ToString() + "\r\n");
-    
+
+                    }
+                    else
+                    {
+                        DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                        dt = dt.AddMilliseconds(msg.ts).ToLocalTime();
+                        if (msg.op == "join")
+                        {
+                            if(!rooms.ContainsKey(msg.rm))
+                            {
+                                tabRooms.TabPages.Add(msg.rm);
+                                rooms[msg.rm] = tabRooms.TabPages[tabRooms.TabPages.Count-1];
+                                rooms[msg.rm].Controls.Add(new RichTextBox());
+                                rooms[msg.rm].Controls[0].Dock = DockStyle.Fill;
+                                RichTextBox txtStatus = (RichTextBox)rooms[msg.rm].Controls[0];
+                                txtStatus.AppendText("[" + dt.ToLongTimeString() + "] ");
+                                txtStatus.AppendText(" You have joined " + msg.rm);
+                            }
+                        }
                     }
                 }));
             }
@@ -55,8 +90,17 @@ namespace _10bClient
             Payload msg = new Payload((string)ar.AsyncState);
             this.BeginInvoke((Action)(() =>
             {
+                RichTextBox txtStatus;
+                if(msg.rm != null && msg.rm != "" && rooms.ContainsKey(msg.rm))
+                    txtStatus = (RichTextBox)rooms[msg.rm].Controls[0];
+                else
+                    txtStatus = (RichTextBox)tbpStatus.Controls[0];
+                txtStatus.AppendText("[" + DateTime.Now.ToLongTimeString() + "] ");
                 if (msg.op == "act" && msg.ex.message != null)
-                    txtStatus.AppendText("<" + conn.Username + "> " + msg.ex.message + "\r\n");
+                {
+                    if (msg.ex.isaction != null && msg.ex.isaction == true) txtStatus.AppendText("* " + conn.Username + " " + msg.ex.message + "\r\n");
+                    else txtStatus.AppendText("<" + conn.Username + "> " + msg.ex.message + "\r\n");
+                }
 #if DEBUG
                 txtStatus.AppendText("<<< " + msg.ToString() + "\r\n");
 #endif
@@ -67,7 +111,18 @@ namespace _10bClient
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            conn.SendMessage(txtMsg.Text, room, WriteCall);
+            if (txtMsg.Text[0] == '/')
+            {
+                if (txtMsg.Text.Split(' ')[0].Substring(1) == "me")
+                    conn.SendMessage(txtMsg.Text.Substring(4), room, true, WriteCall);
+                else if (txtMsg.Text.Split(' ')[0].Substring(1) == "join")
+                    conn.Join(txtMsg.Text.Substring(6), WriteCall);
+            }
+            else
+            {
+                var roomsReversed = rooms.ToDictionary(x => x.Value, x => x.Key);
+                conn.SendMessage(txtMsg.Text, roomsReversed[tabRooms.SelectedTab], false, WriteCall);
+            }
             txtMsg.Text = "";
             txtMsg.Focus();
         }
