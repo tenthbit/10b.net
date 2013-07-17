@@ -77,10 +77,11 @@ namespace _10bClient
                             {
                                 if(keyval.Value.Contains(msg.sr))
                                 {
+
                                     ListView lst = (ListView)(rooms[keyval.Key].Controls.Find("lstUsers", true).ToList()[0]);
                                     lst.Items.Remove(lst.Items.Find(msg.sr, false).ToList()[0]);
                                     RichTextBox txt = (RichTextBox)rooms[keyval.Key].Controls.Find("txtRoom", true).ToList()[0];
-                                    txtRoom.AppendText("[" + dt.ToLongTimeString() + "] ");
+                                    txt.AppendText("[" + dt.ToLongTimeString() + "] ");
                                     txt.AppendText("* " + msg.sr + " has quit.\r\n");
                                 }
                             }
