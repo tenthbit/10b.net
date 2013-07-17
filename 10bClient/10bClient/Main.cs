@@ -192,7 +192,7 @@ namespace _10bClient
 
         private void txtMsg_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && !ModifierKeys.HasFlag(Keys.Shift))
             {
                 e.SuppressKeyPress = true;
                 btnSend_Click(sender, e);

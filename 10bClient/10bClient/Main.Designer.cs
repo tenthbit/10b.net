@@ -31,9 +31,9 @@
             this.tabRooms = new System.Windows.Forms.TabControl();
             this.tbpStatus = new System.Windows.Forms.TabPage();
             this.txtStatus = new System.Windows.Forms.RichTextBox();
-            this.txtMsg = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.lstDummy = new System.Windows.Forms.ListView();
+            this.txtMsg = new System.Windows.Forms.TextBox();
             this.tabRooms.SuspendLayout();
             this.tbpStatus.SuspendLayout();
             this.SuspendLayout();
@@ -72,17 +72,6 @@
             this.txtStatus.TabIndex = 0;
             this.txtStatus.Text = "";
             // 
-            // txtMsg
-            // 
-            this.txtMsg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMsg.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.txtMsg.Location = new System.Drawing.Point(12, 583);
-            this.txtMsg.Name = "txtMsg";
-            this.txtMsg.Size = new System.Drawing.Size(668, 20);
-            this.txtMsg.TabIndex = 1;
-            this.txtMsg.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMsg_KeyDown);
-            // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -104,13 +93,26 @@
             this.lstDummy.TabIndex = 1;
             this.lstDummy.UseCompatibleStateImageBehavior = false;
             // 
+            // txtMsg
+            // 
+            this.txtMsg.AcceptsReturn = true;
+            this.txtMsg.AcceptsTab = true;
+            this.txtMsg.Location = new System.Drawing.Point(12, 567);
+            this.txtMsg.Multiline = true;
+            this.txtMsg.Name = "txtMsg";
+            this.txtMsg.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtMsg.Size = new System.Drawing.Size(668, 37);
+            this.txtMsg.TabIndex = 3;
+            this.txtMsg.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMsg_KeyDown);
+            this.txtMsg.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMsg_KeyUp);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(773, 616);
-            this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtMsg);
+            this.Controls.Add(this.btnSend);
             this.Controls.Add(this.tabRooms);
             this.Name = "Main";
             this.Text = "10b.NET";
@@ -125,11 +127,11 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabRooms;
-        private System.Windows.Forms.TextBox txtMsg;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.TabPage tbpStatus;
         private System.Windows.Forms.RichTextBox txtStatus;
         private System.Windows.Forms.ListView lstDummy;
+        private System.Windows.Forms.TextBox txtMsg;
 
 
 
