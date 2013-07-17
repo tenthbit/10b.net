@@ -55,9 +55,10 @@ namespace _10blib
             tcp.Close();
         }
 
+
         public void Join(string roomid, AsyncCallback call)
         {
-            WriteString(new Payload("join", null, roomid, null).SerializeForSend(), call);
+            WriteString(new Payload("join", null, roomid, null).SerializeForSend(), call); 
         }
 
         public void ReadString(AsyncCallback call)

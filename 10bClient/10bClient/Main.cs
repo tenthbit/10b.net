@@ -20,6 +20,7 @@ namespace _10bClient
         Dictionary<string, TabPage> rooms = new Dictionary<string, TabPage>();
         Dictionary<string, dynamic> roomMeta = new Dictionary<string,dynamic>();
         Dictionary<string, List<string>> userList = new Dictionary<string, List<string>>();
+        List<string> roomsToJoin = new List<string>(); // Purely for keeping a queue of channels to join from favourites
         public Main(string host, int port, string user, string pass, Connect connForm)
         {
             InitializeComponent();
@@ -45,24 +46,27 @@ namespace _10bClient
 
                         DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                         dt = dt.AddMilliseconds(msg.ts).ToLocalTime();
-                        txtRoom.AppendText("[" + dt.ToLongTimeString() + "] ");
                         if (msg.op == "act" && msg.ex.message != null)
                         {
+                            txtRoom.AppendText("[" + dt.ToLongTimeString() + "] ");
                             if (msg.ex.isaction != null && msg.ex.isaction == true) txtRoom.AppendText("* " + msg.sr + " " + msg.ex.message + "\r\n");
                             else txtRoom.AppendText("<" + msg.sr + "> " + msg.ex.message + "\r\n");
                         }
                         else if (msg.op == "join")
                         {
+                            txtRoom.AppendText("[" + dt.ToLongTimeString() + "] ");
                             txtRoom.AppendText("* " + msg.sr + " has joined " + roomMeta[msg.rm].name + "\r\n");
-                                ListView lst = (ListView)(rooms[msg.rm].Controls.Find("lstUsers", true).ToList()[0]);
-                                ListViewItem item = new ListViewItem(msg.sr);
-                                item.Name = msg.sr;
-                                lst.Items.Add(item);
-                                userList[msg.rm].Add(msg.sr);
+                            ListView lst = (ListView)(rooms[msg.rm].Controls.Find("lstUsers", true).ToList()[0]);
+                            ListViewItem item = new ListViewItem(msg.sr);
+                            item.Name = msg.sr;
+                            lst.Items.Add(item);
+                            userList[msg.rm].Add(msg.sr);
                         }
 
                         else if (msg.op == "leave")
                         {
+                            txtRoom.AppendText("[" + dt.ToLongTimeString() + "] ");
+                            txtRoom.AppendText("[" + dt.ToLongTimeString() + "] ");
                             txtRoom.AppendText("* " + msg.sr + " has left " + roomMeta[msg.rm].name + ".\r\n");
                             ListView lst = (ListView)(rooms[msg.rm].Controls.Find("lstUsers", true).ToList()[0]);
                             lst.Items.Remove(lst.Items.Find(msg.sr, false)[0]);
@@ -87,6 +91,17 @@ namespace _10bClient
                             {
                                 roomMeta[msg.rm] = msg.ex;
                                 userList[msg.rm] = msg.ex.users.ToObject<List<string>>();
+                            }
+                            else if (msg.ex != null && msg.ex.favs != null)
+                            {
+                                foreach (var room in msg.ex.favs)
+                                    roomsToJoin.Add((string)room.id);
+                                conn.Join(roomsToJoin[0], WriteCall);
+                            }
+                            else
+                            {
+                                txtRoom.AppendText("[" + dt.ToLongTimeString() + "] ");
+                                txtRoom.AppendText(">>> " + msg.ToString() + "\r\n");
                             }
                         }
                         else
@@ -143,6 +158,18 @@ namespace _10bClient
         void WriteCall(IAsyncResult ar)
         {
             Payload msg = new Payload((string)ar.AsyncState);
+            if (msg.op == "join")
+            {
+                // Not too happy with this business, but SslStream is fucking annoying, so meh
+                if (roomsToJoin.Count > 0)
+                {
+                    if (conn.ssl.CanWrite)
+                        conn.ssl.EndWrite(ar);
+                    conn.Join(roomsToJoin[0], WriteCall);
+                    roomsToJoin.RemoveAt(0);
+                    return;
+                }
+            }
             this.BeginInvoke((Action)(() =>
             {
                 RichTextBox txtRoom;
@@ -150,9 +177,10 @@ namespace _10bClient
                     txtRoom = (RichTextBox)rooms[msg.rm].Controls.Find("txtRoom", true).ToList()[0];
                 else
                     txtRoom = txtStatus;
-                txtRoom.AppendText("[" + DateTime.Now.ToLongTimeString() + "] ");
+
                 if (msg.op == "act" && msg.ex.message != null)
                 {
+                    txtRoom.AppendText("[" + DateTime.Now.ToLongTimeString() + "] ");
                     if (msg.ex.isaction != null && msg.ex.isaction == true) txtRoom.AppendText("* " + conn.Username + " " + msg.ex.message + "\r\n");
                     else txtRoom.AppendText("<" + conn.Username + "> " + msg.ex.message + "\r\n");
                 }

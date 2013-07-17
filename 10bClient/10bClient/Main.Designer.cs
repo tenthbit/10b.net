@@ -30,9 +30,9 @@
         {
             this.tabRooms = new System.Windows.Forms.TabControl();
             this.tbpStatus = new System.Windows.Forms.TabPage();
+            this.lstDummy = new System.Windows.Forms.ListView();
             this.txtStatus = new System.Windows.Forms.RichTextBox();
             this.btnSend = new System.Windows.Forms.Button();
-            this.lstDummy = new System.Windows.Forms.ListView();
             this.txtMsg = new System.Windows.Forms.TextBox();
             this.tabRooms.SuspendLayout();
             this.tbpStatus.SuspendLayout();
@@ -61,6 +61,16 @@
             this.tbpStatus.Text = "Status";
             this.tbpStatus.UseVisualStyleBackColor = true;
             // 
+            // lstDummy
+            // 
+            this.lstDummy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstDummy.Location = new System.Drawing.Point(617, 0);
+            this.lstDummy.Name = "lstDummy";
+            this.lstDummy.Size = new System.Drawing.Size(121, 520);
+            this.lstDummy.TabIndex = 1;
+            this.lstDummy.UseCompatibleStateImageBehavior = false;
+            // 
             // txtStatus
             // 
             this.txtStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -83,20 +93,12 @@
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
-            // lstDummy
-            // 
-            this.lstDummy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstDummy.Location = new System.Drawing.Point(617, 0);
-            this.lstDummy.Name = "lstDummy";
-            this.lstDummy.Size = new System.Drawing.Size(121, 520);
-            this.lstDummy.TabIndex = 1;
-            this.lstDummy.UseCompatibleStateImageBehavior = false;
-            // 
             // txtMsg
             // 
             this.txtMsg.AcceptsReturn = true;
             this.txtMsg.AcceptsTab = true;
+            this.txtMsg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMsg.Location = new System.Drawing.Point(12, 567);
             this.txtMsg.Multiline = true;
             this.txtMsg.Name = "txtMsg";
@@ -104,7 +106,6 @@
             this.txtMsg.Size = new System.Drawing.Size(668, 37);
             this.txtMsg.TabIndex = 3;
             this.txtMsg.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMsg_KeyDown);
-            this.txtMsg.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMsg_KeyUp);
             // 
             // Main
             // 
