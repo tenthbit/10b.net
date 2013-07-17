@@ -227,6 +227,11 @@ namespace _10bClient
                 e.SuppressKeyPress = true;
                 btnSend_Click(sender, e);
             }
+            else if (e.KeyCode == Keys.A && ModifierKeys.HasFlag(Keys.Control))
+            {
+                e.SuppressKeyPress = true;
+                txtMsg.SelectAll();
+            }
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
