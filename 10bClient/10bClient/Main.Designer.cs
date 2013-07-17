@@ -78,6 +78,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtStatus.Location = new System.Drawing.Point(0, 0);
             this.txtStatus.Name = "txtStatus";
+            this.txtStatus.ReadOnly = true;
             this.txtStatus.Size = new System.Drawing.Size(611, 520);
             this.txtStatus.TabIndex = 0;
             this.txtStatus.Text = "";
