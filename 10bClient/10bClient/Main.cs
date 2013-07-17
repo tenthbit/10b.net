@@ -115,8 +115,10 @@ namespace _10bClient
                                 ListView lstUsers = new ListView();
                                 lstUsers.Anchor = (AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top);
                                 foreach (var item in userList[msg.rm])
-                                {
-                                   lstUsers.Items.Add(item);
+                                { 
+                                    ListViewItem listitem = new ListViewItem(item);
+                                    listitem.Name = item;
+                                    lstUsers.Items.Add(listitem);
                                 }
                                 lstUsers.Items.Add(conn.Username);
                                 lstUsers.Location = lstDummy.Location;
