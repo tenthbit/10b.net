@@ -127,6 +127,7 @@ namespace _10bClient
                                 txtNew.Anchor = txtStatus.Anchor;
                                 txtNew.Height = txtStatus.Height;
                                 txtNew.Width = txtStatus.Width;
+                                txtNew.Font = txtStatus.Font;
                                 txtNew.ReadOnly = true;
                                 rooms[msg.rm].Controls.Add(txtNew);
                                 ListView lstUsers = new ListView();
