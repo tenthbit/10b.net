@@ -101,6 +101,7 @@
             this.txtMsg.AcceptsTab = true;
             this.txtMsg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMsg.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMsg.Location = new System.Drawing.Point(12, 567);
             this.txtMsg.Multiline = true;
             this.txtMsg.Name = "txtMsg";
