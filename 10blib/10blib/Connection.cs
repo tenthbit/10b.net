@@ -46,11 +46,13 @@ namespace _10blib
         public void Leave(string roomid, AsyncCallback call)
         {
             WriteString(new Payload("leave", null, roomid, null).SerializeForSend(),call);
-            if (roomid == null)
-            {
-                ssl.Close();
-                tcp.Close();
-            }
+        }
+
+        public void Disconnect()
+        {
+            ssl.Write(System.Text.Encoding.UTF8.GetBytes(new Payload("disconnect", null, null, null).SerializeForSend()));
+            ssl.Close();
+            tcp.Close();
         }
 
         public void Join(string roomid, AsyncCallback call)
